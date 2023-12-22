@@ -1,0 +1,103 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Etablissement {
+  id                Int                 @id @default(autoincrement())
+  nomEtab           String              @db.VarChar(50)
+  typeEtab          String              @db.VarChar(50)
+  descEtab          String              @db.VarChar(200)
+  nomResp           String              @db.VarChar(50)
+  email             String              @db.VarChar(50)
+  tel               String              @db.VarChar(20)
+  logo              String?              @db.LongText
+  salle             Salle[]
+  user              User[]
+  matiere           Matiere[]
+  niveau            NiveauClass[]
+  enseignant        Enseignant[]
+  matiereEnseignant MatiereEnsg[]
+  dispoEnsg         DispoEnsg[]
+}
+
+model User {
+  id            Int            @id @default(autoincrement())
+  nomUser       String         @db.VarChar(50)
+  prenomUser    String         @db.VarChar(50)
+  fctUser       String         @db.VarChar(50)
+  roleUser      String         @db.VarChar(50)
+  loginUser     String         @db.VarChar(20)
+  passwordUser  String         @db.VarChar(10)
+  statusCompte  String         @db.VarChar(50)
+  etablissement Etablissement? @relation(fields: [idEtab], references: [id])
+  idEtab        Int?
+}
+
+model Salle {
+  id            Int            @id @default(autoincrement())
+  nomSalle      String         @db.VarChar(50)
+  typeSalle     String         @db.VarChar(50)
+  etage         String         @db.VarChar(50)
+  capacite      Int         @db.Int    
+  etablissement Etablissement? @relation(fields: [idEtab], references: [id])
+  idEtab        Int?
+}
+
+model Matiere {
+  id            Int            @id @default(autoincrement())
+  nomMatiere    String         @db.VarChar(50)
+  descMat       String         @db.VarChar(200)
+  etablissement Etablissement? @relation(fields: [idEtab], references: [id])
+  idEtab        Int
+}
+
+model NiveauClass {
+  id            Int            @id @default(autoincrement())
+  refNiveau     String         @db.VarChar(20)
+  descNiveau    String         @db.VarChar(200)
+  fraisInscri   Int            @db.Int
+  montant Int
+  etablissement Etablissement? @relation(fields: [idEtab], references: [id])
+  idEtab        Int?
+}
+
+model Enseignant {
+  id            Int            @id @default(autoincrement())
+  nomEnsg       String         @db.VarChar(50)
+  prenomEnsg    String         @db.VarChar(50)
+  fctEnsg       String         @db.VarChar(50)
+  telEnsg       String         @db.VarChar(20)
+  adresseEnsg   String         @db.VarChar(200)
+  modePaiement  String         @db.VarChar(50)
+  taux          Int
+  login         String         @db.VarChar(50)
+  password      String         @db.VarChar(10)
+  emailEnsg     String         @db.VarChar(50)
+  etablissement Etablissement? @relation(fields: [idEtab], references: [id])
+  idEtab        Int?
+}
+
+model MatiereEnsg {
+  id            Int            @id @default(autoincrement())
+  refMatiere    String         @db.VarChar(20)
+  etablissement Etablissement? @relation(fields: [idEtab], references: [id])
+  idEtab        Int?
+}
+
+model DispoEnsg {
+  id            Int            @id @default(autoincrement())
+  idEnsg        Int
+  jour          Int
+  heureDeb      Int
+  heureFin      Int
+  etablissement Etablissement? @relation(fields: [idEtab], references: [id])
+  idEtab        Int?
+}
