@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from './prisma.service';
+import { PrismaService } from '../../prisma.service';
 import { Matiere, Prisma } from '@prisma/client';
 
 @Injectable()
@@ -48,16 +48,9 @@ export class MatiereService {
     });
   }
 
-
-  async deleteMatiere(
-    where: Prisma.MatiereWhereUniqueInput,
-  ): Promise<Matiere> {
+  async deleteMatiere(where: Prisma.MatiereWhereUniqueInput): Promise<Matiere> {
     return this.prisma.matiere.delete({
       where,
     });
   }
-
-
-
-
 }

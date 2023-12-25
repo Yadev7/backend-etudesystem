@@ -11,14 +11,14 @@ datasource db {
 }
 
 model Etablissement {
-  id                Int                 @id @default(autoincrement())
-  nomEtab           String              @db.VarChar(50)
-  typeEtab          String              @db.VarChar(50)
-  descEtab          String              @db.VarChar(200)
-  nomResp           String              @db.VarChar(50)
-  email             String              @db.VarChar(50)
-  tel               String              @db.VarChar(20)
-  logo              String?              @db.LongText
+  id                Int           @id @default(autoincrement())
+  nomEtab           String        @db.VarChar(50)
+  typeEtab          String        @db.VarChar(50)
+  descEtab          String        @db.VarChar(200)
+  nomResp           String        @db.VarChar(50)
+  email             String        @db.VarChar(50)
+  tel               String        @db.VarChar(20)
+  logo              String?       @db.LongText
   salle             Salle[]
   user              User[]
   matiere           Matiere[]
@@ -34,7 +34,7 @@ model User {
   prenomUser    String         @db.VarChar(50)
   fctUser       String         @db.VarChar(50)
   roleUser      String         @db.VarChar(50)
-  loginUser     String         @db.VarChar(20)
+  loginUser     String         @db.VarChar(100)
   passwordUser  String         @db.VarChar(10)
   statusCompte  String         @db.VarChar(50)
   etablissement Etablissement? @relation(fields: [idEtab], references: [id])
@@ -46,7 +46,7 @@ model Salle {
   nomSalle      String         @db.VarChar(50)
   typeSalle     String         @db.VarChar(50)
   etage         String         @db.VarChar(50)
-  capacite      Int         @db.Int    
+  capacite      Int            @db.Int
   etablissement Etablissement? @relation(fields: [idEtab], references: [id])
   idEtab        Int?
 }
@@ -64,7 +64,7 @@ model NiveauClass {
   refNiveau     String         @db.VarChar(20)
   descNiveau    String         @db.VarChar(200)
   fraisInscri   Int            @db.Int
-  montant Int
+  montant       Int
   etablissement Etablissement? @relation(fields: [idEtab], references: [id])
   idEtab        Int?
 }

@@ -7,7 +7,7 @@ CREATE TABLE `Etablissement` (
     `nomResp` VARCHAR(50) NOT NULL,
     `email` VARCHAR(50) NOT NULL,
     `tel` VARCHAR(20) NOT NULL,
-    `logo` LONGTEXT NULL,
+    `logo` BLOB NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
