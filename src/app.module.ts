@@ -18,10 +18,13 @@ import { EtablissementController } from './Configuration/Controllers/etablisseme
 import { DispoEnsgController } from './Configuration/Controllers/dispoensg.controller';
 import { MatiereEnsgController } from './Configuration/Controllers/matiereensg.controller';
 import { NiveauClassController } from './Configuration/Controllers/niveauclass.controller';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 @Module({
   imports: [],
   controllers: [
+    AppController,
     UserController,
     FilesController,
     SalleController,
@@ -33,6 +36,7 @@ import { NiveauClassController } from './Configuration/Controllers/niveauclass.c
     NiveauClassController,
   ],
   providers: [
+    AppService,
     PrismaService,
     SalleService,
     EtablissementService,
