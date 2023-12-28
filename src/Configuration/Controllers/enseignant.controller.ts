@@ -29,12 +29,6 @@ export class EnseignantController {
     });
   }
 
-  // @Post('/enseignant')
-  // async createEnseignant(
-  //   @Body() data: Prisma.EnseignantCreateInput,
-  // ): Promise<EnseignantModel> {
-  //   return this.enseignantService.createEnseignant(data);
-  // }
 
   @Post('/enseignant')
   async createEnseignant(

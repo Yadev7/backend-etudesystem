@@ -36,6 +36,7 @@ export class NiveauClassController {
     return this.niveauClassService.createNiveauClass(data);
   }
 
+
   @Delete('niveauxclass/:id')
   async deleteNiveauxclass(@Param('id') id: string): Promise<NiveauClassModel> {
     return this.niveauClassService.deleteNiveauClass({

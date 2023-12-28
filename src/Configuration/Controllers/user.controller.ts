@@ -28,9 +28,28 @@ export class UserController {
     });
   }
 
+
+
   @Post('user')
   async createUser(@Body() data: Prisma.UserCreateInput): Promise<UserModel> {
-    return this.userService.createUser(data);
+    try {
+      // Check if the content already exists based on a specific property (for example, 'name')
+      const existingUser = await this.userService.findUserByEmail(
+        data.loginUser,
+      );
+
+      if (existingUser) {
+        // If the content exists, you can choose to handle it, log it, or throw an error
+        throw new Error('Enseignant with the same name already exists.');
+      }
+
+      // If it doesn't exist, proceed with creating the content
+      return await this.userService.createUser(data);
+    } catch (error) {
+      // Handle the error here, you can log it or customize the response
+      console.error('Error creating enseignant:', error);
+      throw new Error('Error creating enseignant: ' + error.message); // You can customize the error message if needed
+    }
   }
 
   @Delete('user/:id')

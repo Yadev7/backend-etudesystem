@@ -36,6 +36,8 @@ export class MatiereEnsgController {
     return this.matiereEnsgService.createMatiereEnsg(data);
   }
 
+  
+
   @Delete('/matiereEnsg/:id')
   async deleteMatiereEnsg(@Param('id') id: string): Promise<MatiereEnsgModel> {
     return this.matiereEnsgService.deleteMatiereEnsg({

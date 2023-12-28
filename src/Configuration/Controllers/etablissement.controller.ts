@@ -41,39 +41,13 @@ export class EtablissementController {
     });
   }
 
-  // @Post('etablissement')
-  // async createEtablissement(
-  //   @Body() data: Prisma.EtablissementCreateInput,
-  // ): Promise<EtablissementModel> {
-  //   return this.etablissementService.createEtablissement(data);
-  // }
-
   @Post('etablissement')
   async createEtablissement(
-    @Body() etabData: Prisma.EtablissementCreateInput,
+    @Body() data: Prisma.EtablissementCreateInput,
   ): Promise<EtablissementModel> {
-    const newEtablissement =
-      await this.etablissementService.createEtablissement(etabData);
-    console.log(newEtablissement);
-    const adminUserData: Prisma.UserCreateInput = {
-      nomUser: 'Admin',
-      prenomUser: 'Admin',
-      fctUser: 'admin',
-      roleUser: 'admin',
-      statusCompte: '1',
-      loginUser: newEtablissement.email,
-      passwordUser: 'admin',
-      etablissement: {
-        connect: {
-          id: newEtablissement.id,
-        },
-      },
-    };
-
-    await this.userService.createUser(adminUserData);
-
-    return newEtablissement;
+    return this.etablissementService.createEtablissement(data);
   }
+
 
   @Delete('etablissement/:id')
   async deleteEtablissement(

@@ -54,7 +54,7 @@ model Salle {
 model Matiere {
   id            Int            @id @default(autoincrement())
   nomMatiere    String         @db.VarChar(50)
-  descMat       String         @db.VarChar(200)
+  // descMat       String?        @db.VarChar(200)
   etablissement Etablissement? @relation(fields: [idEtab], references: [id])
   idEtab        Int
 }
@@ -90,6 +90,8 @@ model MatiereEnsg {
   refMatiere    String         @db.VarChar(20)
   etablissement Etablissement? @relation(fields: [idEtab], references: [id])
   idEtab        Int?
+  idEnsg        Int?
+  idMatiere     Int?
 }
 
 model DispoEnsg {

@@ -36,6 +36,7 @@ export class DispoEnsgController {
     return this.dispoEnsgService.createDispoEnsg(data);
   }
 
+
   @Delete('/dispoEnsg/:id')
   async deleteDispoEnsg(@Param('id') id: string): Promise<DispoEnsgModel> {
     return this.dispoEnsgService.deleteDispoEnsg({
