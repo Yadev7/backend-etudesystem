@@ -54,7 +54,6 @@ model Salle {
 model Matiere {
   id            Int            @id @default(autoincrement())
   nomMatiere    String         @db.VarChar(50)
-  // descMat       String?        @db.VarChar(200)
   etablissement Etablissement? @relation(fields: [idEtab], references: [id])
   idEtab        Int
 }

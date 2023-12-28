@@ -52,4 +52,9 @@ export class MatiereController {
       data,
     });
   }
+
+  @Get('matiere/etab/:id')
+  async GetMatiereByEtab(@Param('id') id: string): Promise<MatiereModel[]> {
+    return this.matiereService.GetMatireByEtab(Number(id));
+  }
 }

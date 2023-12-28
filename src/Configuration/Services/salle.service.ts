@@ -60,10 +60,10 @@ export class SalleService {
     });
   }
 
-  async GetSalleByEtab(EtabId: number): Promise<Salle[]> {
+  async GetSalleByEtab(id: number): Promise<Salle[]> {
     return this.prisma.salle.findMany({
       where: {
-        idEtab: EtabId,
+        idEtab: id,
       },
     });
   }
