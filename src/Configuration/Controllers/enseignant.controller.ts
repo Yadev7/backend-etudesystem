@@ -33,23 +33,7 @@ export class EnseignantController {
   async createEnseignant(
     @Body() data: Prisma.EnseignantCreateInput,
   ): Promise<EnseignantModel> {
-    try {
-      // Check if the content already exists based on a specific property (for example, 'name')
-      const existingEnseignant =
-        await this.enseignantService.findEnseignantByName(data.nomEnsg);
-
-      if (existingEnseignant) {
-        // If the content exists, you can choose to handle it, log it, or throw an error
-        throw new Error('Enseignant with the same name already exists.');
-      }
-
-      // If it doesn't exist, proceed with creating the content
-      return await this.enseignantService.createEnseignant(data);
-    } catch (error) {
-      // Handle the error here, you can log it or customize the response
-      console.error('Error creating enseignant:', error);
-      throw new Error('Error creating enseignant: ' + error.message); // You can customize the error message if needed
-    }
+    return this.enseignantService.createEnseignant(data);
   }
 
   @Delete('/enseignant/:id')

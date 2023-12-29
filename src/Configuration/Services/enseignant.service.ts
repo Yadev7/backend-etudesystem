@@ -35,17 +35,17 @@ export class EnseignantService {
     data: Prisma.EnseignantCreateInput,
   ): Promise<Enseignant> {
     return this.prisma.enseignant.create({
-      data,
+        nomEnsg: data.nomEnsg,
+        prenomEnsg: data.prenomEnsg,
+        telEnsg: data.telEnsg,
+        adresseEnsg: data.adresseEnsg,
+        modePaiement: data.modePaiement,
+        taux: data.taux,
     });
   }
 
-  async findEnseignantByName(nomEnsg: string): Promise<Enseignant | null> {
-    return this.prisma.enseignant.findFirst({
-      where: {
-        nomEnsg: nomEnsg,
-      },
-    });
-  }
+
+
 
   async deleteEnseignant(
     data: Prisma.EnseignantWhereUniqueInput,

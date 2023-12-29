@@ -62,7 +62,7 @@ model NiveauClass {
   id            Int            @id @default(autoincrement())
   refNiveau     String         @db.VarChar(20)
   // descNiveau    String         @db.VarChar(200)
-  fraisInscri   Int            @db.Int
+  fraisInscri   String         @db.VarChar(50)
   // montant       Int
   etablissement Etablissement? @relation(fields: [idEtab], references: [id])
   idEtab        Int?
