@@ -61,9 +61,9 @@ model Matiere {
 model NiveauClass {
   id            Int            @id @default(autoincrement())
   refNiveau     String         @db.VarChar(20)
-  descNiveau    String         @db.VarChar(200)
+  // descNiveau    String         @db.VarChar(200)
   fraisInscri   Int            @db.Int
-  montant       Int
+  // montant       Int
   etablissement Etablissement? @relation(fields: [idEtab], references: [id])
   idEtab        Int?
 }

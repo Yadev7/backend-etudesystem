@@ -41,11 +41,38 @@ export class EtablissementController {
     });
   }
 
+  // @Post('etablissement')
+  // async createEtablissement(
+  //   @Body() data: Prisma.EtablissementCreateInput,
+  // ): Promise<EtablissementModel> {
+  //   return this.etablissementService.createEtablissement(data);
+  // }
+
   @Post('etablissement')
   async createEtablissement(
-    @Body() data: Prisma.EtablissementCreateInput,
+    @Body() etabData: Prisma.EtablissementCreateInput,
   ): Promise<EtablissementModel> {
-    return this.etablissementService.createEtablissement(data);
+    const newEtablissement =
+      await this.etablissementService.createEtablissement(etabData);
+    console.log(newEtablissement);
+    const adminUserData: Prisma.UserCreateInput = {
+      nomUser: 'Admin',
+      prenomUser: 'Admin',
+      fctUser: 'admin',
+      roleUser: 'admin',
+      statusCompte: '1',
+      loginUser: newEtablissement.email,
+      passwordUser: 'admin',
+      etablissement: {
+        connect: {
+          id: newEtablissement.id,
+        },
+      },
+    };
+
+    await this.userService.createUser(adminUserData);
+
+    return newEtablissement;
   }
 
 

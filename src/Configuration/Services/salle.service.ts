@@ -11,9 +11,7 @@ export class SalleService {
     salleWhereUniqueInput: Prisma.SalleWhereUniqueInput,
   ): Promise<Salle | null> {
     return this.prisma.salle.findUnique({
-      where: {
-        ...salleWhereUniqueInput,
-      }
+      where: salleWhereUniqueInput,
     });
   }
 
