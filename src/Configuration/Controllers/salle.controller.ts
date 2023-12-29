@@ -41,7 +41,6 @@ export class SalleController {
     return this.salleService.createSalle(data);
   }
 
-
   @Put('salle/:id')
   async updateSalle(
     @Param('id') id: string,
@@ -66,5 +65,4 @@ export class SalleController {
   ): Promise<SalleModel | null> {
     return this.salleService.findSalleByNom(nomSalle);
   }
-  
 }

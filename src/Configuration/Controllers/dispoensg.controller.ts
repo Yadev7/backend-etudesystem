@@ -36,7 +36,6 @@ export class DispoEnsgController {
     return this.dispoEnsgService.createDispoEnsg(data);
   }
 
-
   @Delete('/dispoEnsg/:id')
   async deleteDispoEnsg(@Param('id') id: string): Promise<DispoEnsgModel> {
     return this.dispoEnsgService.deleteDispoEnsg({
@@ -53,5 +52,19 @@ export class DispoEnsgController {
       where: { id: Number(id) },
       data,
     });
+  }
+
+  @Get('/dispoEnsgs/:id') // /dispoEnsgs/1
+  async GetDispoEnsgByEnseignant(
+    @Param('id') id: string,
+  ): Promise<DispoEnsgModel[]> {
+    return this.dispoEnsgService.GetDispoEnsgByEnseignant({
+      id: Number(id),
+    });
+  }
+
+  @Get('dispoEnsgs/etab/:id')
+  async GetDispoEnsgByEtab(@Param('id') id: string): Promise<DispoEnsgModel[]> {
+    return this.dispoEnsgService.GetDispoEnsgByEtab(Number(id));
   }
 }

@@ -61,4 +61,12 @@ export class MatiereEnsgService {
       where,
     });
   }
+
+  async GetMatiereEnsgByEtab(id: number): Promise<MatiereEnsg[]> {
+    return this.prisma.matiereEnsg.findMany({
+      where: {
+        idEtab: id,
+      },
+    });
+  }
 }

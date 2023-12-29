@@ -63,7 +63,29 @@ export class UserService {
   }
 
 
+async findUserByLogin(loginUser: string): Promise<User | null> {
+  return this.prisma.user.findFirst({
+    where: {
+      loginUser: loginUser,
+    },
+  });
+}
 
+async findUserById(id: number): Promise<User | null> {
+  return this.prisma.user.findFirst({
+    where: {
+      id: id,
+    },
+  });
+}
+
+async GetUserByEtab(id: number): Promise<User[]> {
+  return this.prisma.user.findMany({
+    where: {
+      idEtab: id,
+    },
+  });
+}
   
 
 }

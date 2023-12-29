@@ -36,8 +36,6 @@ export class MatiereEnsgController {
     return this.matiereEnsgService.createMatiereEnsg(data);
   }
 
-  
-
   @Delete('/matiereEnsg/:id')
   async deleteMatiereEnsg(@Param('id') id: string): Promise<MatiereEnsgModel> {
     return this.matiereEnsgService.deleteMatiereEnsg({
@@ -54,5 +52,12 @@ export class MatiereEnsgController {
       where: { id: Number(id) },
       data,
     });
+  }
+
+  @Get('/matiereEnsgs/etab/:id')
+  async GetMatiereEnsgByEtab(
+    @Param('id') id: string,
+  ): Promise<MatiereEnsgModel[]> {
+    return this.matiereEnsgService.GetMatiereEnsgByEtab(Number(id));
   }
 }

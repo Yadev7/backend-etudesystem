@@ -34,7 +34,6 @@ export class MatiereController {
     return this.matiereService.createMatiere(data);
   }
 
-
   @Delete('matiere/:id')
   async deleteMatiere(@Param('id') id: string): Promise<MatiereModel> {
     return this.matiereService.deleteMatiere({

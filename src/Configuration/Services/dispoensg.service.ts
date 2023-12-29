@@ -55,4 +55,21 @@ export class DispoEnsgService {
       where,
     });
   }
+
+  async GetDispoEnsgByEnseignant(
+    where: Prisma.DispoEnsgWhereInput,
+  ): Promise<DispoEnsg[]> {
+    return this.prisma.dispoEnsg.findMany({
+      where,
+    });
+  }
+  
+
+  async GetDispoEnsgByEtab(id: number): Promise<DispoEnsg[]> {
+    return this.prisma.dispoEnsg.findMany({
+      where: {
+        idEtab: id,
+      },
+    });
+  }
 }

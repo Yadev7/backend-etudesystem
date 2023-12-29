@@ -29,7 +29,6 @@ export class EnseignantController {
     });
   }
 
-
   @Post('/enseignant')
   async createEnseignant(
     @Body() data: Prisma.EnseignantCreateInput,
@@ -69,5 +68,12 @@ export class EnseignantController {
       where: { id: Number(id) },
       data,
     });
+  }
+
+  @Get('/enseignant/etab/:id')
+  async GetEnseignantsByEtab(
+    @Param('id') id: string,
+  ): Promise<EnseignantModel[]> {
+    return this.enseignantService.GetEnseignantsByEtab(Number(id));
   }
 }

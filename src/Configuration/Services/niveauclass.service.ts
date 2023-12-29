@@ -61,4 +61,12 @@ export class NiveauClassService {
       where,
     });
   }
+
+  async GetNiveauClassByEtab(id: number): Promise<NiveauClass[]> {
+    return this.prisma.niveauClass.findMany({
+      where: {
+        idEtab: id,
+      },
+    });
+  }
 }

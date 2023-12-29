@@ -65,4 +65,12 @@ export class EnseignantService {
       where,
     });
   }
+
+  async GetEnseignantsByEtab(id: number): Promise<Enseignant[]> {
+    return this.prisma.enseignant.findMany({
+      where: {
+        idEtab: id,
+      },
+    });
+  }
 }
