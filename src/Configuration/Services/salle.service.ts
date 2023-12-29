@@ -74,6 +74,14 @@ export class SalleService {
     });
   }
 
+  async GetSalleById(id: string): Promise<Salle | null> {
+    return this.prisma.salle.findUnique({
+      where: {
+        id: Number(id),
+      },
+    });
+  }
+
 
 
 }

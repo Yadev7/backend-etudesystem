@@ -56,6 +56,7 @@ model Matiere {
   nomMatiere    String         @db.VarChar(50)
   etablissement Etablissement? @relation(fields: [idEtab], references: [id])
   idEtab        Int
+  matiereEnsg   MatiereEnsg[]
 }
 
 model NiveauClass {
@@ -72,7 +73,7 @@ model Enseignant {
   id            Int            @id @default(autoincrement())
   nomEnsg       String         @db.VarChar(50)
   prenomEnsg    String         @db.VarChar(50)
-  fctEnsg       String         @db.VarChar(50)
+  // fctEnsg       String         @db.VarChar(50)
   telEnsg       String         @db.VarChar(20)
   adresseEnsg   String         @db.VarChar(200)
   modePaiement  String         @db.VarChar(50)
@@ -82,23 +83,29 @@ model Enseignant {
   emailEnsg     String         @db.VarChar(50)
   etablissement Etablissement? @relation(fields: [idEtab], references: [id])
   idEtab        Int?
+  matiereEnsg MatiereEnsg[]
+  dispoEnsg   DispoEnsg[]
 }
 
 model MatiereEnsg {
   id            Int            @id @default(autoincrement())
-  refMatiere    String         @db.VarChar(20)
+  // refMatiere    String         @db.VarChar(20)
   etablissement Etablissement? @relation(fields: [idEtab], references: [id])
   idEtab        Int?
+  enseignant    Enseignant? @relation(fields: [idEnsg], references: [id])
   idEnsg        Int?
+  matiere       Matiere?    @relation(fields: [idMatiere], references: [id])
   idMatiere     Int?
+
 }
 
 model DispoEnsg {
   id            Int            @id @default(autoincrement())
-  idEnsg        Int
+  enseignant    Enseignant? @relation(fields: [idEnsg], references: [id])
+  idEnsg        Int?
   jour          Int
-  heureDeb      Int
-  heureFin      Int
+  heureDeb      String
+  heureFin      String
   etablissement Etablissement? @relation(fields: [idEtab], references: [id])
   idEtab        Int?
 }

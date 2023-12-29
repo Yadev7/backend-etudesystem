@@ -35,17 +35,9 @@ export class EnseignantService {
     data: Prisma.EnseignantCreateInput,
   ): Promise<Enseignant> {
     return this.prisma.enseignant.create({
-        nomEnsg: data.nomEnsg,
-        prenomEnsg: data.prenomEnsg,
-        telEnsg: data.telEnsg,
-        adresseEnsg: data.adresseEnsg,
-        modePaiement: data.modePaiement,
-        taux: data.taux,
+      data,
     });
   }
-
-
-
 
   async deleteEnseignant(
     data: Prisma.EnseignantWhereUniqueInput,
@@ -73,4 +65,5 @@ export class EnseignantService {
       },
     });
   }
+
 }
