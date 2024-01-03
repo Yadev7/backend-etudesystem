@@ -38,12 +38,7 @@ export class EnseignantController {
   }
 
 
-
-
-
-
-
-
+  
   @Post('/enseignant')
   async createEnseignantWithRelatedData(
     @Body() enseignantDataWithRelations: any, // This should contain enseignant data along with MatiereEnsg and DispoEnsg data
@@ -98,11 +93,6 @@ export class EnseignantController {
       dispoEnsg: createdDispoEnsg,
     };
   }
-
-
-
-
-  
 
   @Delete('/enseignant/:id')
   async deleteEnseignant(@Param('id') id: string): Promise<EnseignantModel> {

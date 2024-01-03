@@ -20,6 +20,8 @@ import { MatiereEnsgController } from './Configuration/Controllers/matiereensg.c
 import { NiveauClassController } from './Configuration/Controllers/niveauclass.controller';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { EleveController } from './Configuration/Controllers/eleve.controller';
+import { EleveService } from './Configuration/Services/eleve.service';
 
 @Module({
   imports: [],
@@ -34,6 +36,7 @@ import { AppService } from './app.service';
     DispoEnsgController,
     MatiereEnsgController,
     NiveauClassController,
+    EleveController
   ],
   providers: [
     AppService,
@@ -46,6 +49,7 @@ import { AppService } from './app.service';
     EnseignantService,
     MatiereEnsgService,
     DispoEnsgService,
+    EleveService
   ],
 })
 export class AppModule {}

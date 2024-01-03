@@ -26,6 +26,8 @@ model Etablissement {
   enseignant        Enseignant[]
   matiereEnseignant MatiereEnsg[]
   dispoEnsg         DispoEnsg[]
+  eleve             Eleve[]
+  inscription       Inscription[]
 }
 
 model User {
@@ -57,6 +59,7 @@ model Matiere {
   etablissement Etablissement? @relation(fields: [idEtab], references: [id])
   idEtab        Int
   matiereEnsg   MatiereEnsg[]
+  groupeHeure   GroupeHeure[]
 }
 
 model NiveauClass {
@@ -67,6 +70,7 @@ model NiveauClass {
   // montant       Int
   etablissement Etablissement? @relation(fields: [idEtab], references: [id])
   idEtab        Int?
+  groupeHeure   GroupeHeure[]
 }
 
 model Enseignant {
@@ -83,8 +87,9 @@ model Enseignant {
   emailEnsg     String         @db.VarChar(50)
   etablissement Etablissement? @relation(fields: [idEtab], references: [id])
   idEtab        Int?
-  matiereEnsg MatiereEnsg[]
-  dispoEnsg   DispoEnsg[]
+  matiereEnsg   MatiereEnsg[]
+  dispoEnsg     DispoEnsg[]
+  groupeHeure   GroupeHeure[]
 }
 
 model MatiereEnsg {
@@ -92,20 +97,73 @@ model MatiereEnsg {
   // refMatiere    String         @db.VarChar(20)
   etablissement Etablissement? @relation(fields: [idEtab], references: [id])
   idEtab        Int?
-  enseignant    Enseignant? @relation(fields: [idEnsg], references: [id])
+  enseignant    Enseignant?    @relation(fields: [idEnsg], references: [id])
   idEnsg        Int?
-  matiere       Matiere?    @relation(fields: [idMatiere], references: [id])
+  matiere       Matiere?       @relation(fields: [idMatiere], references: [id])
   idMatiere     Int?
-
 }
 
 model DispoEnsg {
   id            Int            @id @default(autoincrement())
-  enseignant    Enseignant? @relation(fields: [idEnsg], references: [id])
+  enseignant    Enseignant?    @relation(fields: [idEnsg], references: [id])
   idEnsg        Int?
   jour          Int
-  heureDeb      String
-  heureFin      String
+  heureDeb      String?
+  heureFin      String?
   etablissement Etablissement? @relation(fields: [idEtab], references: [id])
   idEtab        Int?
 }
+
+model Eleve {
+  id            Int            @id @default(autoincrement())
+  numElevees    Int
+  nomEleve      String         @db.VarChar(50)
+  prenomEleve   String         @db.VarChar(50)
+  telEleve      String         @db.VarChar(20)
+  emailEleve    String         @db.VarChar(50)
+  login         String         @db.VarChar(50)
+  password      String         @db.VarChar(10)
+  etablissement Etablissement? @relation(fields: [idEtab], references: [id])
+  idEtab        Int?
+}
+
+model Inscription {
+  id            Int            @id @default(autoincrement())
+  numInscri     Int
+  taux_Reduct   Int
+  prix_mensuel  Int
+  date_inscri   DateTime
+  etat_inscri   String
+  etablissement Etablissement? @relation(fields: [idEtab], references: [id])
+  idEtab        Int?
+  absence       Absence[]
+}
+
+model GroupeHeure {
+  id              Int          @id @default(autoincrement())
+  niveau          NiveauClass? @relation(fields: [idNiveau], references: [id])
+  idNiveau        Int?
+  enseignant      Enseignant?  @relation(fields: [idEnsg], references: [id])
+  idEnsg          Int?
+  matiere         Matiere?     @relation(fields: [idMatiere], references: [id])
+  idMatiere       Int?
+  numGroupe       Int?
+  prix_mensuel    Int?
+  modePaiement    String
+  taux            Int?
+  date_debut      DateTime
+  date_fin        DateTime
+  nbrHeureSemaine Int
+}
+
+model Absence {
+  id          Int          @id @default(autoincrement())
+  inscription Inscription? @relation(fields: [idInscri], references: [id])
+  idInscri    Int?
+  jour        Int
+  dateAbs     DateTime
+  heureD      String
+  heureF      String
+}
+
+
