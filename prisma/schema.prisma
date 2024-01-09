@@ -31,6 +31,8 @@ model Eleve {
   emailEleve    String         @db.VarChar(50)
   login         String         @db.VarChar(50)
   password      String         @db.VarChar(50)
+  etabOrigine   String         @db.VarChar(50)
+  wallet        Int
   etablissement Etablissement? @relation(fields: [idEtab], references: [id])
   idEtab        Int?
 }
@@ -52,6 +54,8 @@ model Enseignant {
   matiereEnsg   MatiereEnsg[]
   dispoEnsg     DispoEnsg[]
   groupeHeure   GroupeHeure[]
+  groupeEnsg    GroupeEnsg[]
+  emploie       Emploie[]
 }
 
 model Etablissement {
@@ -132,16 +136,18 @@ model User {
 //Suivie Pedagogique
 
 model Inscription {
-  id            Int                   @id @default(autoincrement())
-  numInscri     Int
-  taux_Reduct   Int
-  prix_mensuel  Int
-  date_inscri   DateTime
-  etat_inscri   String                @db.VarChar(50)
-  etablissement Etablissement?        @relation(fields: [idEtab], references: [id])
-  idEtab        Int?
-  absence       Absence[]
-  paiement      PaiementInscription[]
+  id                    Int                   @id @default(autoincrement())
+  numInscri             Int
+  taux_Reduct           Int
+  prix_mensuel          Int
+  date_derniere_reprise DateTime
+  date_susp             DateTime
+  date_inscri           DateTime
+  etat_inscri           String                @db.VarChar(50)
+  etablissement         Etablissement?        @relation(fields: [idEtab], references: [id])
+  idEtab                Int?
+  absence               Absence[]
+  paiement              PaiementInscription[]
 }
 
 model GroupeHeure {
@@ -154,11 +160,13 @@ model GroupeHeure {
   idMatiere       Int?
   numGroupe       Int?
   prix_mensuel    Int?
+  prix_fix_eleve  Int?
   modePaiement    String                @db.VarChar(50)
   taux            Int?
   date_debut      DateTime
   date_fin        DateTime
   nbrHeureSemaine Int
+  etatGroupe      String                @db.VarChar(50)
   groupeEnsg      GroupeEnsg[]
   paiement        PaiementInscription[]
   emploie         Emploie[]
@@ -178,6 +186,8 @@ model GroupeEnsg {
   id         Int          @id @default(autoincrement())
   groupe     GroupeHeure? @relation(fields: [idGroupe], references: [id])
   idGroupe   Int?
+  enseignant Enseignant?  @relation(fields: [idEnsg], references: [id])
+  idEnsg     Int?
   date_debut DateTime
   date_fin   DateTime
 }
@@ -187,6 +197,7 @@ model PaiementInscription {
   moisPay     Int
   montantPay  Int
   datePay     DateTime
+  date_susp   DateTime
   modePay     String       @db.VarChar(50)
   inscription Inscription? @relation(fields: [idInscri], references: [id])
   idInscri    Int?
@@ -200,6 +211,8 @@ model Emploie {
   idGroupe    Int?
   salle       Salle?       @relation(fields: [idSalle], references: [id])
   idSalle     Int?
+  enseignant  Enseignant?  @relation(fields: [idEnsg], references: [id])
+  idEnsg      Int?
   jour        Int
   heureDeb    String       @db.VarChar(50)
   heureFin    String       @db.VarChar(50)
