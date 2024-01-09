@@ -140,7 +140,7 @@ model Inscription {
   numInscri             Int
   taux_Reduct           Int
   prix_mensuel          Int
-  date_derniere_reprise DateTime
+  date_dern_reprise DateTime
   date_susp             DateTime
   date_inscri           DateTime
   etat_inscri           String                @db.VarChar(50)
