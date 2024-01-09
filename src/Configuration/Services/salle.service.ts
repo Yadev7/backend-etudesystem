@@ -58,6 +58,7 @@ export class SalleService {
     });
   }
 
+  // Get Salle By Etablissement 
   async GetSalleByEtab(id: number): Promise<Salle[]> {
     return this.prisma.salle.findMany({
       where: {
@@ -66,6 +67,7 @@ export class SalleService {
     });
   }
 
+  // Get Salle By Nom
   async findSalleByNom(nomSalle: string): Promise<Salle | null> {
     return this.prisma.salle.findFirst({
       where: {
@@ -74,6 +76,7 @@ export class SalleService {
     });
   }
 
+  // Get Salle By ID 
   async GetSalleById(id: string): Promise<Salle | null> {
     return this.prisma.salle.findUnique({
       where: {
@@ -81,7 +84,5 @@ export class SalleService {
       },
     });
   }
-
-
 
 }

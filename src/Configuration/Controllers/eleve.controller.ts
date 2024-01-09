@@ -40,13 +40,10 @@ export class EleveController {
     });
   }
 
-
   @Post('eleve/:id')
   async deleteEleve(@Param('id') id: string): Promise<EleveModel> {
     return this.eleveService.deleteEleve({
       id: Number(id),
     });
   }
-
-  
 }

@@ -6,13 +6,13 @@ import {
   Param,
   Post,
   Put,
-  HttpStatus, Res,
+  HttpStatus,
+  Res,
   NotFoundException,
   // BadRequestException,
 } from '@nestjs/common';
 
 import { Response } from 'express'; // Import 'Response' from 'express'
-
 
 import { EnseignantService } from '../Services/enseignant.service';
 import { Prisma, Enseignant as EnseignantModel } from '@prisma/client';
@@ -92,15 +92,13 @@ export class EnseignantController {
     };
   }
 
-
-
   // @Put('/enseignant/:id')
   // async updateEnseignant(
   //   @Param('id') id: string,
   //   @Body() updateData: any, // This is where you'd receive the updated data
   // ): Promise<any> {
   //   // Assuming updateData contains the fields you want to update
-  
+
   //   const updatedEnseignant = await this.prisma.enseignant.update({
   //     where: {
   //       id: parseInt(id, 10),
@@ -119,12 +117,9 @@ export class EnseignantController {
   //       dispoEnsg: true,
   //     },
   //   });
-  
+
   //   return updatedEnseignant;
   // }
-  
-
-
 
   // @Put('/enseignant/:id')
   // async updateEnseignant(
@@ -169,8 +164,6 @@ export class EnseignantController {
   //   }
   // }
 
-
-
   @Put('/enseignant/:id')
   async updateEnseignant(
     @Param('id') id: string,
@@ -198,28 +191,36 @@ export class EnseignantController {
       });
 
       if (!updatedEnseignant) {
-        return res.status(HttpStatus.NOT_FOUND).json({ message: 'Enseignant not found' });
+        return res
+          .status(HttpStatus.NOT_FOUND)
+          .json({ message: 'Enseignant not found' });
       }
 
       return res.json(updatedEnseignant);
     } catch (error) {
       // Customizing error messages based on different conditions
       if (error instanceof NotFoundException) {
-        return res.status(HttpStatus.NOT_FOUND).json({ message: error.message });
+        return res
+          .status(HttpStatus.NOT_FOUND)
+          .json({ message: error.message });
       } else if (error.code === 'P2002') {
         // Assuming Prisma's unique constraint violation error
-        return res.status(HttpStatus.BAD_REQUEST).json({ message: 'Duplicate entry or invalid data' });
+        return res
+          .status(HttpStatus.BAD_REQUEST)
+          .json({ message: 'Duplicate entry or invalid data' });
       } else {
-        return res.status(HttpStatus.BAD_REQUEST).json({ message: 'Invalid update operation' });
+        return res
+          .status(HttpStatus.BAD_REQUEST)
+          .json({ message: 'Invalid update operation' });
       }
     }
   }
 
-  
-
-
   @Get('/enseignant/:id')
-  async getEnseignant(@Param('id') id: string, @Res() res: Response): Promise<any> {
+  async getEnseignant(
+    @Param('id') id: string,
+    @Res() res: Response,
+  ): Promise<any> {
     try {
       const enseignant = await this.prisma.enseignant.findUnique({
         where: {
@@ -240,12 +241,16 @@ export class EnseignantController {
       });
 
       if (!enseignant) {
-        return res.status(HttpStatus.NOT_FOUND).json({ message: 'Enseignant not found' });
+        return res
+          .status(HttpStatus.NOT_FOUND)
+          .json({ message: 'Enseignant not found' });
       }
 
       return res.json(enseignant);
     } catch (error) {
-       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Something went wrong' });
+      return res
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .json({ message: 'Something went wrong' });
     }
   }
 
@@ -256,7 +261,6 @@ export class EnseignantController {
     });
   }
 
-
   // @Put('/enseignant/:id')
   // async updateEnseignantWithRelatedData(
   //   @Param('id') enseignantId: number,
@@ -264,7 +268,7 @@ export class EnseignantController {
   // ): Promise<any> {
   //   // Update regular enseignant data
   //   const updatedEnseignant = await this.enseignantService.updateEnseignant(
-      
+
   //     updatedEnseignantData.enseignantId
   //   );
 
@@ -316,8 +320,6 @@ export class EnseignantController {
   //   };
   // }
 
-
-  
   // @Get('/enseignant/:id')
   // async getEnseignant(@Param('id') id: string): Promise<any> {
   //   try {
@@ -372,10 +374,6 @@ export class EnseignantController {
   //   return enseignant;
   // }
 
-
-
-
-
   // @Put('/enseignant/:id')
   // async updateEnseignant(
   //   @Param('id') id: string,
@@ -386,7 +384,6 @@ export class EnseignantController {
   //     data,
   //   });
   // }
-
 
   // @Put('/enseignant/:id')
   // async updateEnseignantWithRelatedData(
@@ -400,7 +397,6 @@ export class EnseignantController {
   //   );
   //   return updatedEnseignant;
   // }
-  
 
   // @Get('/enseignant/:id') // Define the route with a parameter for the teacher's ID
   // async getEnseignant(@Param('id') id: string): Promise<any> {

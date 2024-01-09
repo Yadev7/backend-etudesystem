@@ -34,13 +34,15 @@ export class UserController {
       });
 
       if (!user) {
-        return res.status(HttpStatus.NOT_FOUND).json({ message: 'User not found' });
+        return res
+          .status(HttpStatus.NOT_FOUND)
+          .json({ message: 'User not found' });
       }
       return res.json(user);
-
-    } 
-    catch (error) {
-        return res.status(HttpStatus.NOT_FOUND).json({ message: 'User not found' });
+    } catch (error) {
+      return res
+        .status(HttpStatus.NOT_FOUND)
+        .json({ message: 'User not found' });
     }
   }
 

@@ -45,8 +45,6 @@ export class EtablissementController {
   //     });
   // }
 
-
-
   // @Get('etablissement/:id')
   // async getEtablissementById(
   //   @Param('id') id: string,
@@ -55,7 +53,7 @@ export class EtablissementController {
   //     const etablissement = await this.etablissementService.etablissement({
   //       id: Number(id),
   //     });
-      
+
   //     if (!etablissement) {
   //       throw new NotFoundException('Etablissement not found');
   //     }
@@ -66,9 +64,6 @@ export class EtablissementController {
   //   }
   // }
 
-
-
-  
   @Get('etablissement/:id')
   async getEtablissementById(
     @Param('id') id: string,
@@ -80,16 +75,18 @@ export class EtablissementController {
       });
 
       if (!etablissement) {
-        return res.status(HttpStatus.NOT_FOUND).json({ message: 'Etablissement not found' });
+        return res
+          .status(HttpStatus.NOT_FOUND)
+          .json({ message: 'Etablissement not found' });
       }
 
       return res.json(etablissement);
     } catch (error) {
-      return res.status(HttpStatus.NOT_FOUND).json({ message: 'Etablissement not found' });
+      return res
+        .status(HttpStatus.NOT_FOUND)
+        .json({ message: 'Etablissement not found' });
     }
   }
-
-
 
   // @Post('etablissement')
   // async createEtablissement(
@@ -124,7 +121,6 @@ export class EtablissementController {
 
     return newEtablissement;
   }
-
 
   @Delete('etablissement/:id')
   async deleteEtablissement(

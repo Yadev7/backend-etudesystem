@@ -47,7 +47,6 @@ import {
         data,
       });
     }
-    
 
     @Delete('inscription/:id')
     async deleteInscription(
@@ -57,5 +56,6 @@ import {
         id: Number(id),
       });
     }
+
     
   }

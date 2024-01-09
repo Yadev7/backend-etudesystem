@@ -26,23 +26,24 @@ export class MatiereController {
   async getMatiereById(
     @Param('id') id: string,
     @Res() res: Response,
-    
-    ): Promise<any> {
+  ): Promise<any> {
     try {
       const matiere = await this.matiereService.matiere({
         id: Number(id),
       });
 
-      if(!matiere) {
-        return res.status(HttpStatus.NOT_FOUND).json({ message: 'Matiere not found' });
+      if (!matiere) {
+        return res
+          .status(HttpStatus.NOT_FOUND)
+          .json({ message: 'Matiere not found' });
       }
       return res.json(matiere);
+    } catch (error) {
+      return res
+        .status(HttpStatus.NOT_FOUND)
+        .json({ message: 'Matiere not found' });
     }
-      catch (error) {
-        return res.status(HttpStatus.NOT_FOUND).json({ message: 'Matiere not found' });
-      }
-    }
-
+  }
 
   @Post('matiere')
   async createMatiere(

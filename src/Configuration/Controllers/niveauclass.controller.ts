@@ -32,14 +32,17 @@ export class NiveauClassController {
       const niveauClass = await this.niveauClassService.niveauClass({
         id: Number(id),
       });
-      if(!niveauClass) {
-        return res.status(HttpStatus.NOT_FOUND).json({ message: 'Salle not found' });
+      if (!niveauClass) {
+        return res
+          .status(HttpStatus.NOT_FOUND)
+          .json({ message: 'Salle not found' });
       }
       return niveauClass;
     } catch (error) {
-      return res.status(HttpStatus.NOT_FOUND).json({ message: 'Salle not found' });
+      return res
+        .status(HttpStatus.NOT_FOUND)
+        .json({ message: 'Salle not found' });
     }
-
   }
 
   @Post('niveauxclass')
