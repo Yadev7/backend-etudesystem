@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 
 import { EleveService } from '../Services/eleve.service';
 import { Prisma, Eleve as EleveModel } from '@prisma/client';
@@ -27,7 +27,7 @@ export class EleveController {
     return this.eleveService.createEleve(data);
   }
 
-  @Post('eleve/:id')
+  @Put('eleve/:id')
   async updateEleve(
     @Param('id') id: string,
     @Body() data: Prisma.EleveUpdateInput,

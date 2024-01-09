@@ -3,12 +3,16 @@ import {
   Controller,
   Delete,
   Get,
+  HttpStatus,
   Param,
   Post,
   Put,
+  Res,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
+
+import { Response } from 'express'; // Import 'Response' from 'express'
 
 import { EtablissementService } from '../Services/etablissement.service';
 import { Prisma, Etablissement as EtablissementModel } from '@prisma/client';
@@ -32,14 +36,60 @@ export class EtablissementController {
     return this.etablissementService.etablissements({});
   }
 
+  // @Get('etablissement/:id')
+  // async getEtablissementById(
+  //   @Param('id') id: string,
+  // ): Promise<EtablissementModel | null> {
+  //     return this.etablissementService.etablissement({
+  //       id: Number(id),
+  //     });
+  // }
+
+
+
+  // @Get('etablissement/:id')
+  // async getEtablissementById(
+  //   @Param('id') id: string,
+  // ): Promise<EtablissementModel | null> {
+  //   try {
+  //     const etablissement = await this.etablissementService.etablissement({
+  //       id: Number(id),
+  //     });
+      
+  //     if (!etablissement) {
+  //       throw new NotFoundException('Etablissement not found');
+  //     }
+
+  //     return etablissement;
+  //   } catch (error) {
+  //     throw new NotFoundException('Etablissement not found');
+  //   }
+  // }
+
+
+
+  
   @Get('etablissement/:id')
   async getEtablissementById(
     @Param('id') id: string,
-  ): Promise<EtablissementModel | null> {
-    return this.etablissementService.etablissement({
-      id: Number(id),
-    });
+    @Res() res: Response,
+  ): Promise<any> {
+    try {
+      const etablissement = await this.etablissementService.etablissement({
+        id: Number(id),
+      });
+
+      if (!etablissement) {
+        return res.status(HttpStatus.NOT_FOUND).json({ message: 'Etablissement not found' });
+      }
+
+      return res.json(etablissement);
+    } catch (error) {
+      return res.status(HttpStatus.NOT_FOUND).json({ message: 'Etablissement not found' });
+    }
   }
+
+
 
   // @Post('etablissement')
   // async createEtablissement(

@@ -3,13 +3,16 @@ import {
   Controller,
   Delete,
   Get,
+  HttpStatus,
   Param,
   Post,
   Put,
+  Res,
 } from '@nestjs/common';
 
 import { NiveauClassService } from '../Services/niveauclass.service';
 import { Prisma, NiveauClass as NiveauClassModel } from '@prisma/client';
+import { Response } from 'express';
 
 @Controller()
 export class NiveauClassController {
@@ -23,10 +26,20 @@ export class NiveauClassController {
   @Get('niveauxclass/:id')
   async getNiveauxclassById(
     @Param('id') id: string,
-  ): Promise<NiveauClassModel | null> {
-    return this.niveauClassService.niveauClass({
-      id: Number(id),
-    });
+    @Res() res: Response,
+  ): Promise<any> {
+    try {
+      const niveauClass = await this.niveauClassService.niveauClass({
+        id: Number(id),
+      });
+      if(!niveauClass) {
+        return res.status(HttpStatus.NOT_FOUND).json({ message: 'Salle not found' });
+      }
+      return niveauClass;
+    } catch (error) {
+      return res.status(HttpStatus.NOT_FOUND).json({ message: 'Salle not found' });
+    }
+
   }
 
   @Post('niveauxclass')

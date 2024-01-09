@@ -3,14 +3,16 @@ import {
   Controller,
   Delete,
   Get,
+  HttpStatus,
   Param,
   Post,
   Put,
+  Res,
 } from '@nestjs/common';
 
 import { MatiereService } from '../Services/matiere.service';
 import { Prisma, Matiere as MatiereModel } from '@prisma/client';
-
+import { Response } from 'express'; // Import 'Response' from 'express'
 @Controller()
 export class MatiereController {
   constructor(private readonly matiereService: MatiereService) {}
@@ -21,11 +23,26 @@ export class MatiereController {
   }
 
   @Get('matiere/:id')
-  async getMatiereById(@Param('id') id: string): Promise<MatiereModel | null> {
-    return this.matiereService.matiere({
-      id: Number(id),
-    });
-  }
+  async getMatiereById(
+    @Param('id') id: string,
+    @Res() res: Response,
+    
+    ): Promise<any> {
+    try {
+      const matiere = await this.matiereService.matiere({
+        id: Number(id),
+      });
+
+      if(!matiere) {
+        return res.status(HttpStatus.NOT_FOUND).json({ message: 'Matiere not found' });
+      }
+      return res.json(matiere);
+    }
+      catch (error) {
+        return res.status(HttpStatus.NOT_FOUND).json({ message: 'Matiere not found' });
+      }
+    }
+
 
   @Post('matiere')
   async createMatiere(

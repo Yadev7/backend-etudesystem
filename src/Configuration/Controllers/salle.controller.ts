@@ -3,30 +3,46 @@ import {
   Controller,
   Delete,
   Get,
+  HttpStatus,
   Param,
   Post,
   Put,
+  Res,
 } from '@nestjs/common';
 
 import { SalleService } from '../Services/salle.service';
 import { Prisma, Salle as SalleModel } from '@prisma/client';
-
+import { Response } from 'express'; // Import 'Response' from 'express'
 @Controller()
 export class SalleController {
   constructor(private readonly salleService: SalleService) {}
 
   //Salle
-
   @Get('salles')
   async getSalles(): Promise<SalleModel[]> {
     return this.salleService.salles({});
   }
 
   @Get('salle/:id')
-  async getSalleById(@Param('id') id: string): Promise<SalleModel | null> {
-    return this.salleService.salle({
-      id: Number(id),
-    });
+  async getSalleById(
+    @Param('id') id: string,
+    @Res() res: Response,
+  ): Promise<any> {
+    try {
+      const salle = await this.salleService.salle({
+        id: Number(id),
+      });
+      if (!salle) {
+        return res
+          .status(HttpStatus.NOT_FOUND)
+          .json({ message: 'Salle not found' });
+      }
+      return res.json(salle);
+    } catch (error) {
+      return res
+        .status(HttpStatus.NOT_FOUND)
+        .json({ message: 'Salle not found' });
+    }
   }
 
   @Get('salle/etab/:id')
@@ -37,8 +53,21 @@ export class SalleController {
   @Post('salle')
   async createSalle(
     @Body() data: Prisma.SalleCreateInput,
-  ): Promise<SalleModel> {
-    return this.salleService.createSalle(data);
+    @Res() res: Response,
+  ): Promise<any> {
+    try {
+      const salle = await this.salleService.createSalle(data);
+      if (!salle) {
+        return res
+          .status(HttpStatus.NOT_FOUND)
+          .json({ message: 'Salle not found' });
+      }
+      return res.json(salle);
+    } catch (error) {
+      return res
+        .status(HttpStatus.NOT_FOUND)
+        .json({ message: 'Salle not found' });
+    }
   }
 
   @Put('salle/:id')

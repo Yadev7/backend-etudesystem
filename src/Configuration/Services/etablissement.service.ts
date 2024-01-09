@@ -9,9 +9,14 @@ export class EtablissementService {
   async etablissement(
     etablissementWhereUniqueInput: Prisma.EtablissementWhereUniqueInput,
   ): Promise<Etablissement | null> {
-    return this.prisma.etablissement.findUnique({
+  if(!etablissementWhereUniqueInput.id) {
+    throw new Error('Missing ID')
+  } else {
+        return this.prisma.etablissement.findUnique({
       where: etablissementWhereUniqueInput,
     });
+  }
+
   }
 
   async etablissements(params: {

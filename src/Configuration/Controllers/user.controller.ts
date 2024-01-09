@@ -3,14 +3,16 @@ import {
   Controller,
   Delete,
   Get,
+  HttpStatus,
   Param,
   Post,
   Put,
+  Res,
 } from '@nestjs/common';
 
 import { UserService } from '../Services/user.service';
 import { Prisma, User as UserModel } from '@prisma/client';
-
+import { Response } from 'express'; // Import 'Response' from 'express'
 @Controller()
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -22,13 +24,25 @@ export class UserController {
   }
 
   @Get('user/:id')
-  async getUserById(@Param('id') id: string): Promise<UserModel | null> {
-    return this.userService.user({
-      id: Number(id),
-    });
+  async getUserById(
+    @Param('id') id: string,
+    @Res() res: Response,
+  ): Promise<any> {
+    try {
+      const user = await this.userService.user({
+        id: Number(id),
+      });
+
+      if (!user) {
+        return res.status(HttpStatus.NOT_FOUND).json({ message: 'User not found' });
+      }
+      return res.json(user);
+
+    } 
+    catch (error) {
+        return res.status(HttpStatus.NOT_FOUND).json({ message: 'User not found' });
+    }
   }
-
-
 
   @Post('user')
   async createUser(@Body() data: Prisma.UserCreateInput): Promise<UserModel> {
