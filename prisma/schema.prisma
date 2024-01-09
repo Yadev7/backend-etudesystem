@@ -16,8 +16,8 @@ model DispoEnsg {
   enseignant    Enseignant?    @relation(fields: [idEnsg], references: [id])
   idEnsg        Int?
   jour          Int
-  heureDeb      String?
-  heureFin      String?
+  heureDeb      String         @db.VarChar(50)
+  heureFin      String?        @db.VarChar(50)
   etablissement Etablissement? @relation(fields: [idEtab], references: [id])
   idEtab        Int?
 }
@@ -97,7 +97,7 @@ model MatiereEnsg {
 model NiveauClass {
   id            Int            @id @default(autoincrement())
   refNiveau     String         @db.VarChar(20)
-  // descNiveau    String         @db.VarChar(200)
+  // descNiveau    String      @db.VarChar(200)
   fraisInscri   String         @db.VarChar(50)
   // montant       Int
   etablissement Etablissement? @relation(fields: [idEtab], references: [id])
@@ -129,9 +129,6 @@ model User {
   idEtab        Int?
 }
 
-
-
-
 //Suivie Pedagogique
 
 model Inscription {
@@ -140,7 +137,7 @@ model Inscription {
   taux_Reduct   Int
   prix_mensuel  Int
   date_inscri   DateTime
-  etat_inscri   String
+  etat_inscri   String                @db.VarChar(50)
   etablissement Etablissement?        @relation(fields: [idEtab], references: [id])
   idEtab        Int?
   absence       Absence[]
@@ -157,7 +154,7 @@ model GroupeHeure {
   idMatiere       Int?
   numGroupe       Int?
   prix_mensuel    Int?
-  modePaiement    String
+  modePaiement    String                @db.VarChar(50)
   taux            Int?
   date_debut      DateTime
   date_fin        DateTime
@@ -173,8 +170,8 @@ model Absence {
   idInscri    Int?
   jour        Int
   dateAbs     DateTime
-  heureD      String
-  heureF      String
+  heureD      String       @db.VarChar(50)
+  heureF      String       @db.VarChar(50)
 }
 
 model GroupeEnsg {
@@ -190,7 +187,7 @@ model PaiementInscription {
   moisPay     Int
   montantPay  Int
   datePay     DateTime
-  modePay     String
+  modePay     String       @db.VarChar(50)
   inscription Inscription? @relation(fields: [idInscri], references: [id])
   idInscri    Int?
   groupeHeure GroupeHeure? @relation(fields: [idGroupe], references: [id])
@@ -204,6 +201,6 @@ model Emploie {
   salle       Salle?       @relation(fields: [idSalle], references: [id])
   idSalle     Int?
   jour        Int
-  heureDeb    String
-  heureFin    String
+  heureDeb    String       @db.VarChar(50)
+  heureFin    String       @db.VarChar(50)
 }
