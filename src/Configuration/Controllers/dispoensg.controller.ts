@@ -67,4 +67,5 @@ export class DispoEnsgController {
   async GetDispoEnsgByEtab(@Param('id') id: string): Promise<DispoEnsgModel[]> {
     return this.dispoEnsgService.GetDispoEnsgByEtab(Number(id));
   }
+  
 }

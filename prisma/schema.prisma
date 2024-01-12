@@ -139,7 +139,7 @@ model Inscription {
   id                Int                   @id @default(autoincrement())
   numInscri         Int
   taux_Reduct       Int
-  prix_mensuel      Int
+  prix_mensuel      Float
   date_dern_reprise DateTime
   date_susp         DateTime
   date_inscri       DateTime
@@ -159,8 +159,8 @@ model GroupeHeure {
   matiere         Matiere?              @relation(fields: [idMatiere], references: [id])
   idMatiere       Int?
   numGroupe       Int?
-  prix_mensuel    Int?
-  prix_fix_eleve  Int?
+  prix_mensuel    Float?
+  prix_fix_eleve  Float?
   modePaiement    String                @db.VarChar(50)
   taux            Int?
   date_debut      DateTime
@@ -195,7 +195,7 @@ model GroupeEnsg {
 model PaiementInscription {
   id          Int          @id @default(autoincrement())
   moisPay     Int
-  montantPay  Int
+  montantPay  Float
   datePay     DateTime
   date_susp   DateTime
   modePay     String       @db.VarChar(50)
