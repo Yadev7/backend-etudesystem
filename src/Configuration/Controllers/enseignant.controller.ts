@@ -164,6 +164,9 @@ export class EnseignantController {
   //   }
   // }
 
+
+
+  
   @Put('/enseignant/:id')
   async updateEnseignant(
     @Param('id') id: string,
@@ -255,10 +258,43 @@ export class EnseignantController {
   }
 
   @Delete('/enseignant/:id')
-  async deleteEnseignant(@Param('id') id: string): Promise<EnseignantModel> {
-    return this.enseignantService.deleteEnseignant({
-      id: Number(id),
-    });
+  async deleteEnseignant(
+    @Param('id') id: string,
+    @Body() deleteData: any,
+    @Res() res: Response,
+    ): Promise<any> {
+      try {
+        const deleteEnseignant = await this.prisma.enseignant.delete({
+          where: {
+            id: parseInt(id, 10),
+          },
+          
+        });
+  
+        if (!deleteEnseignant) {
+          return res
+            .status(HttpStatus.NOT_FOUND)
+            .json({ message: 'Enseignant not found' });
+        }
+  
+        return res.json(deleteEnseignant);
+      } catch (error) {
+        // Customizing error messages based on different conditions
+        if (error instanceof NotFoundException) {
+          return res
+            .status(HttpStatus.NOT_FOUND)
+            .json({ message: error.message });
+        } else if (error.code === 'P2002') {
+          // Assuming Prisma's unique constraint violation error
+          return res
+            .status(HttpStatus.BAD_REQUEST)
+            .json({ message: 'Duplicate entry or invalid data' });
+        } else {
+          return res
+            .status(HttpStatus.BAD_REQUEST)
+            .json({ message: 'Invalid update operation' });
+        }
+      }
   }
 
   // @Put('/enseignant/:id')

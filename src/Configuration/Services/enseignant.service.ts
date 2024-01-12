@@ -77,4 +77,25 @@ export class EnseignantService {
     });
   }
 
+  async GetDispoEnsgByEnseignant(
+    id: number,
+  ): Promise<Enseignant[]> {
+    return this.prisma.enseignant.findMany({
+      where: {
+        id: id,
+      }
+    })
+  }
+
+  async UpdateEnseignantWithRelatedData(
+    id: number,
+    updateData: any,
+  ): Promise<Enseignant> {
+    return this.prisma.enseignant.update({
+      where: { id: id },
+      data: updateData,
+    })
+  }
+  
+  
 }
