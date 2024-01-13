@@ -15,7 +15,7 @@ model DispoEnsg {
   id            Int            @id @default(autoincrement())
   enseignant    Enseignant?    @relation(fields: [idEnsg], references: [id])
   idEnsg        Int?
-  jour          Int
+  jour          Float
   heureDeb      String         @db.VarChar(50)
   heureFin      String?        @db.VarChar(50)
   etablissement Etablissement? @relation(fields: [idEtab], references: [id])
@@ -24,7 +24,7 @@ model DispoEnsg {
 
 model Eleve {
   id            Int            @id @default(autoincrement())
-  numElevees    Int
+  numElevees    Float
   nomEleve      String         @db.VarChar(50)
   prenomEleve   String         @db.VarChar(50)
   telEleve      String         @db.VarChar(20)
@@ -32,7 +32,7 @@ model Eleve {
   login         String         @db.VarChar(50)
   password      String         @db.VarChar(50)
   etabOrigine   String         @db.VarChar(50)
-  wallet        Int
+  wallet        Float
   etablissement Etablissement? @relation(fields: [idEtab], references: [id])
   idEtab        Int?
 }
@@ -45,7 +45,7 @@ model Enseignant {
   telEnsg       String         @db.VarChar(20)
   adresseEnsg   String         @db.VarChar(200)
   modePaiement  String         @db.VarChar(50)
-  taux          Int
+  taux          Float
   login         String         @db.VarChar(50)
   password      String         @db.VarChar(50)
   emailEnsg     String         @db.VarChar(50)
@@ -114,7 +114,7 @@ model Salle {
   nomSalle      String         @db.VarChar(50)
   typeSalle     String         @db.VarChar(50)
   etage         String         @db.VarChar(50)
-  capacite      Int            @db.Int
+  capacite      Float          @db.Float
   etablissement Etablissement? @relation(fields: [idEtab], references: [id])
   idEtab        Int?
   emploie       Emploie[]
@@ -137,8 +137,8 @@ model User {
 
 model Inscription {
   id                Int                   @id @default(autoincrement())
-  numInscri         Int
-  taux_Reduct       Int
+  numInscri         Float
+  taux_Reduct       Float
   prix_mensuel      Float
   date_dern_reprise DateTime
   date_susp         DateTime
@@ -158,14 +158,14 @@ model GroupeHeure {
   idEnsg          Int?
   matiere         Matiere?              @relation(fields: [idMatiere], references: [id])
   idMatiere       Int?
-  numGroupe       Int?
+  numGroupe       Float?
   prix_mensuel    Float?
   prix_fix_eleve  Float?
   modePaiement    String                @db.VarChar(50)
-  taux            Int?
+  taux            Float?
   date_debut      DateTime
   date_fin        DateTime
-  nbrHeureSemaine Int
+  nbrHeureSemaine Float
   etatGroupe      String                @db.VarChar(50)
   groupeEnsg      GroupeEnsg[]
   paiement        PaiementInscription[]
@@ -176,7 +176,7 @@ model Absence {
   id          Int          @id @default(autoincrement())
   inscription Inscription? @relation(fields: [idInscri], references: [id])
   idInscri    Int?
-  jour        Int
+  jour        Float
   dateAbs     DateTime
   heureD      String       @db.VarChar(50)
   heureF      String       @db.VarChar(50)
@@ -194,7 +194,7 @@ model GroupeEnsg {
 
 model PaiementInscription {
   id          Int          @id @default(autoincrement())
-  moisPay     Int
+  moisPay     Float
   montantPay  Float
   datePay     DateTime
   date_susp   DateTime

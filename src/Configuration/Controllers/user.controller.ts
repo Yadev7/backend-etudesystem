@@ -85,4 +85,12 @@ export class UserController {
       data,
     });
   }
+
+
+  @Get('user/etab/:id')
+  async GetUserByEtab(@Param('id') id: string): Promise<UserModel[]> {
+    return this.userService.GetUserByEtab(Number(id));
+  }
+
+  
 }
