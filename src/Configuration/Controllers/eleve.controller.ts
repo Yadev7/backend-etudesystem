@@ -7,12 +7,13 @@ import { Prisma, Eleve as EleveModel } from '@prisma/client';
 export class EleveController {
   constructor(private readonly eleveService: EleveService) {}
 
-  //Eleve
+  // Get All Eleves
   @Get('eleves')
   async getEleves(): Promise<EleveModel[]> {
     return this.eleveService.eleves({});
   }
 
+  // Get Eleve By ID
   @Get('eleve/:id')
   async getEleveById(@Param('id') id: string): Promise<EleveModel | null> {
     return this.eleveService.eleve({
@@ -20,6 +21,7 @@ export class EleveController {
     });
   }
 
+  // Post a new Eleve
   @Post('eleve')
   async createEleve(
     @Body() data: Prisma.EleveCreateInput,
@@ -27,6 +29,7 @@ export class EleveController {
     return this.eleveService.createEleve(data);
   }
 
+  // Update a Eleve
   @Put('eleve/:id')
   async updateEleve(
     @Param('id') id: string,
@@ -40,6 +43,7 @@ export class EleveController {
     });
   }
 
+  // Delete a Eleve
   @Post('eleve/:id')
   async deleteEleve(@Param('id') id: string): Promise<EleveModel> {
     return this.eleveService.deleteEleve({

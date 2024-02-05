@@ -15,11 +15,23 @@ import { Prisma, DispoEnsg as DispoEnsgModel } from '@prisma/client';
 export class DispoEnsgController {
   constructor(private readonly dispoEnsgService: DispoEnsgService) {}
 
+  // Get all dispoEnsgs
   @Get('/dispoEnsgs')
   async getDispoEnsg(): Promise<DispoEnsgModel[]> {
     return this.dispoEnsgService.dispoEnsgs({});
   }
 
+  // Get dispoEnsgs by Enseignant
+  @Get('/dispoEnsgs/enseignant/:id') // /dispoEnsgs/1
+  async GetDispoEnsgByEnseignant(
+    @Param('id') id: string,
+  ): Promise<DispoEnsgModel[]> {
+    return this.dispoEnsgService.GetDispoEnsgByEnseignant({
+      id: Number(id),
+    });
+  }
+
+  // Get dispoEnsg by ID
   @Get('/dispoEnsg/:id')
   async getDispoEnsgById(
     @Param('id') id: string,
@@ -29,6 +41,7 @@ export class DispoEnsgController {
     });
   }
 
+  // Post a new dispoEnsg
   @Post('/dispoEnsg')
   async createDispoEnsg(
     @Body() data: Prisma.DispoEnsgCreateInput,
@@ -36,6 +49,7 @@ export class DispoEnsgController {
     return this.dispoEnsgService.createDispoEnsg(data);
   }
 
+  // Delete a dispoEnsg
   @Delete('/dispoEnsg/:id')
   async deleteDispoEnsg(@Param('id') id: string): Promise<DispoEnsgModel> {
     return this.dispoEnsgService.deleteDispoEnsg({
@@ -43,6 +57,7 @@ export class DispoEnsgController {
     });
   }
 
+  // Update a dispoEnsg
   @Put('/dispoEnsg/:id')
   async updateDispoEnsg(
     @Param('id') id: string,
@@ -54,18 +69,9 @@ export class DispoEnsgController {
     });
   }
 
-  @Get('/dispoEnsgs/:id') // /dispoEnsgs/1
-  async GetDispoEnsgByEnseignant(
-    @Param('id') id: string,
-  ): Promise<DispoEnsgModel[]> {
-    return this.dispoEnsgService.GetDispoEnsgByEnseignant({
-      id: Number(id),
-    });
-  }
-
+  // Get dispoEnsg by etab
   @Get('dispoEnsgs/etab/:id')
   async GetDispoEnsgByEtab(@Param('id') id: string): Promise<DispoEnsgModel[]> {
     return this.dispoEnsgService.GetDispoEnsgByEtab(Number(id));
   }
-  
 }

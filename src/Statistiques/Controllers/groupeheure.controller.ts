@@ -15,12 +15,13 @@ import { Prisma, GroupeHeure as GroupeHeureModel } from '@prisma/client';
 export class GroupeHeureController {
   constructor(private readonly groupeHeureService: GroupeHeureService) {}
 
-  //GroupeHeure
+  // Get all groupesHeures
   @Get('groupeheures')
   async getGroupeHeures(): Promise<GroupeHeureModel[]> {
     return this.groupeHeureService.groupesHeures({});
   }
 
+  // Get groupesHeure by ID
   @Get('groupeheure/:id')
   async getGroupeHeureById(
     @Param('id') id: string,
@@ -30,6 +31,7 @@ export class GroupeHeureController {
     });
   }
 
+  // Create new groupesHeure
   @Post('groupeheure')
   async createGroupeHeure(
     @Body() data: Prisma.GroupeHeureCreateInput,
@@ -37,6 +39,7 @@ export class GroupeHeureController {
     return this.groupeHeureService.createGroupeHeure(data);
   }
 
+  // Update groupesHeure
   @Put('groupeheure/:id')
   async updateGroupeHeure(
     @Param('id') id: string,
@@ -48,10 +51,14 @@ export class GroupeHeureController {
     });
   }
 
+  // Delete groupesHeure
   @Delete('groupeheure/:id')
   async deleteGroupeHeure(@Param('id') id: string): Promise<GroupeHeureModel> {
     return this.groupeHeureService.deleteGroupeHeure({
       id: Number(id),
     });
   }
+
+
+  
 }

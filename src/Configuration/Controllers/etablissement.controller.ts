@@ -31,6 +31,8 @@ export class EtablissementController {
     private readonly userService: UserService,
   ) {}
 
+
+  // Get all etablissements
   @Get('etablissements')
   async getEtablissements(): Promise<EtablissementModel[]> {
     return this.etablissementService.etablissements({});
@@ -64,6 +66,8 @@ export class EtablissementController {
   //   }
   // }
 
+
+  // Get etablissement by ID
   @Get('etablissement/:id')
   async getEtablissementById(
     @Param('id') id: string,
@@ -88,13 +92,8 @@ export class EtablissementController {
     }
   }
 
-  // @Post('etablissement')
-  // async createEtablissement(
-  //   @Body() data: Prisma.EtablissementCreateInput,
-  // ): Promise<EtablissementModel> {
-  //   return this.etablissementService.createEtablissement(data);
-  // }
 
+  // Create a new etablissement
   @Post('etablissement')
   async createEtablissement(
     @Body() etabData: Prisma.EtablissementCreateInput,
@@ -106,8 +105,8 @@ export class EtablissementController {
       nomUser: 'Admin',
       prenomUser: 'Admin',
       fctUser: 'admin',
-      roleUser: 'admin',
-      statusCompte: '1',
+      roleUser: 'ADMIN',
+      statusCompte: 'ACTIF',
       loginUser: newEtablissement.email,
       passwordUser: 'admin',
       etablissement: {
@@ -122,6 +121,7 @@ export class EtablissementController {
     return newEtablissement;
   }
 
+  // Delete an etablissement
   @Delete('etablissement/:id')
   async deleteEtablissement(
     @Param('id') id: string,
@@ -131,6 +131,8 @@ export class EtablissementController {
     });
   }
 
+
+  // Update an etablissement
   @Put('etablissement/:id')
   async updateEtablissement(
     @Param('id') id: string,
@@ -142,6 +144,8 @@ export class EtablissementController {
     });
   }
 
+
+  // Upload a file
   @Post('upload')
   @UseInterceptors(
     FileInterceptor('file', {

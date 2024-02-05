@@ -17,12 +17,13 @@ import { Response } from 'express'; // Import 'Response' from 'express'
 export class SalleController {
   constructor(private readonly salleService: SalleService) {}
 
-  //Salle
+  // Get all salles
   @Get('salles')
   async getSalles(): Promise<SalleModel[]> {
     return this.salleService.salles({});
   }
 
+  // Get salle by ID
   @Get('salle/:id')
   async getSalleById(
     @Param('id') id: string,
@@ -45,11 +46,13 @@ export class SalleController {
     }
   }
 
+  // Get salle by Etab
   @Get('salle/etab/:id')
   async GetSalleByEtab(@Param('id') id: string): Promise<SalleModel[]> {
     return this.salleService.GetSalleByEtab(Number(id));
   }
 
+  // Create salle
   @Post('salle')
   async createSalle(
     @Body() data: Prisma.SalleCreateInput,
@@ -70,6 +73,7 @@ export class SalleController {
     }
   }
 
+  // Update salle
   @Put('salle/:id')
   async updateSalle(
     @Param('id') id: string,
@@ -81,6 +85,7 @@ export class SalleController {
     });
   }
 
+  // Delete salle
   @Delete('salle/:id')
   async deleteSalle(@Param('id') id: string): Promise<SalleModel> {
     return this.salleService.deleteSalle({
@@ -88,6 +93,7 @@ export class SalleController {
     });
   }
 
+  // Get Salle By Nom
   @Get('salle/nom/:nom')
   async findSalleByNom(
     @Param('nom') nomSalle: string,

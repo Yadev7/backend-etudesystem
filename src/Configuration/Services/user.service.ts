@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma.service';
-import { Prisma, User } from '@prisma/client';
+import { Prisma, User, UserRole } from '@prisma/client';
 
 @Injectable()
 export class UserService {
@@ -77,6 +77,14 @@ async findUserById(id: number): Promise<User | null> {
       id: id,
     },
   });
+}
+
+async findUserByRole(roleUser: UserRole): Promise<User | null> {
+  return this.prisma.user.findFirst({
+    where: {
+      roleUser: roleUser,
+    }
+  })
 }
 
 async GetUserByEtab(id: number): Promise<User[]> {

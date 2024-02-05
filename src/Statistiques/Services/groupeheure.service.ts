@@ -57,4 +57,13 @@ export class GroupeHeureService {
       where,
     });
   }
+
+  async deleteManyGroupeHeure(
+    where: Prisma.GroupeHeureWhereInput,
+  ): Promise<Prisma.BatchPayload> {
+    return this.prisma.groupeHeure.deleteMany({
+      where,
+    })
+  }
+  
 }

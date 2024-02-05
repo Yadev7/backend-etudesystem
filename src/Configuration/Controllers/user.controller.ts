@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+
   HttpStatus,
   Param,
   Post,
@@ -11,18 +12,19 @@ import {
 } from '@nestjs/common';
 
 import { UserService } from '../Services/user.service';
-import { Prisma, User as UserModel } from '@prisma/client';
+import { Prisma, User as UserModel, UserRole } from '@prisma/client';
 import { Response } from 'express'; // Import 'Response' from 'express'
 @Controller()
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  // Users
+  // Get all users
   @Get('users')
   async getUsers(): Promise<UserModel[]> {
     return this.userService.users({});
   }
 
+  // Get user by ID
   @Get('user/:id')
   async getUserById(
     @Param('id') id: string,
@@ -46,6 +48,25 @@ export class UserController {
     }
   }
 
+  // Get user by role
+  @Get('user/role/:role')
+  async GetUserByRole(@Param('role') role: UserRole,@Res() res: Response,): Promise<any> {
+    try {
+      if (role === UserRole.ADMIN) {
+        console.log('Admin');
+        return await this.userService.findUserByRole(UserRole.ADMIN);
+      } else if (role === UserRole.USER) {
+        console.log('User');
+        return await this.userService.findUserByRole(UserRole.USER);
+      }
+    } catch (error) {
+      return res
+        .status(HttpStatus.NOT_FOUND)
+        .json({ message: 'User not found' });
+    }
+  }
+
+  // Create user
   @Post('user')
   async createUser(@Body() data: Prisma.UserCreateInput): Promise<UserModel> {
     try {
@@ -68,6 +89,7 @@ export class UserController {
     }
   }
 
+  // Delete user
   @Delete('user/:id')
   async deleteUser(@Param('id') id: string): Promise<UserModel> {
     return this.userService.deleteUser({
@@ -75,6 +97,7 @@ export class UserController {
     });
   }
 
+  // Update user
   @Put('user/:id')
   async updateUser(
     @Param('id') id: string,
@@ -86,11 +109,9 @@ export class UserController {
     });
   }
 
-
+  // Get user by etablissement
   @Get('user/etab/:id')
   async GetUserByEtab(@Param('id') id: string): Promise<UserModel[]> {
     return this.userService.GetUserByEtab(Number(id));
   }
-
-  
 }

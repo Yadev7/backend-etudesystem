@@ -15,11 +15,13 @@ import {
   export class GroupeEnsgController {
     constructor(private readonly groupeEnsgService: GroupeEnsgService) {}
 
+    // Get all groupesEnsgs
     @Get('groupesEnsgs')
     async getGroupesEnsgs(): Promise<GroupeEnsgModel[]> {
       return this.groupeEnsgService.groupesEnsgs({});
     }
 
+    // Get groupeEnsg by ID
     @Get('groupeEnsg/:id')
     async getGroupeEnsgById(
       @Param('id') id: string,
@@ -29,7 +31,7 @@ import {
       });
     }
     
-
+// Create new groupeEnsg
     @Post('groupeEnsg')
     async createGroupeEnsg(
       @Body() data: Prisma.GroupeEnsgCreateInput,
@@ -37,6 +39,7 @@ import {
       return this.groupeEnsgService.createGroupeEnsg(data);
     }
     
+    // Update groupeEnsg
     @Put('groupeEnsg/:id')
     async updateGroupeEnsg(
       @Param('id') id: string,
@@ -48,7 +51,7 @@ import {
       });
     }
     
-
+    // Delete groupeEnsg
     @Delete('groupeEnsg/:id')
     async deleteGroupeEnsg(
       @Param('id') id: string,

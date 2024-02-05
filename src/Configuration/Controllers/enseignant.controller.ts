@@ -25,11 +25,15 @@ export class EnseignantController {
     private readonly prisma: PrismaService,
   ) {}
 
+
+  // Get All Enseignants
   @Get('/enseignants')
   async getEnseignants(): Promise<EnseignantModel[]> {
     return this.enseignantService.enseignants({});
   }
 
+
+  // Get Enseignants by Etab
   @Get('/enseignant/etab/:id')
   async GetEnseignantsByEtab(
     @Param('id') id: string,
@@ -37,18 +41,19 @@ export class EnseignantController {
     return this.enseignantService.GetEnseignantsByEtab(Number(id));
   }
 
+// Create a new Enseignant
   @Post('/enseignant')
   async createEnseignantWithRelatedData(
-    @Body() enseignantDataWithRelations: any, // This should contain enseignant data along with MatiereEnsg and DispoEnsg data
+    @Body() enseignantDataWithRelations: any,
   ): Promise<any> {
-    // Insert regular enseignant data
-    const insertedEnseignant = await this.enseignantService.createEnseignant(
-      enseignantDataWithRelations.enseignantData,
-    );
-    console.log(insertedEnseignant);
-
-    // Retrieve the inserted enseignant's ID
-    const insertedEnseignantId = insertedEnseignant.id;
+    try {
+      // Insert regular enseignant data
+      const insertedEnseignant = await this.enseignantService.createEnseignant(
+        enseignantDataWithRelations.enseignantData,
+      );
+  
+      // Retrieve the inserted enseignant's ID
+      const insertedEnseignantId = insertedEnseignant.id;
 
     // Prepare MatiereEnsg and DispoEnsg data array for bulk insertion
     const matiereEnsgDataArray: Prisma.MatiereEnsgUncheckedCreateInput[] = [];
@@ -90,7 +95,12 @@ export class EnseignantController {
       matiereEnsg: createdMatiereEnsg,
       dispoEnsg: createdDispoEnsg,
     };
+  } catch (error) {
+    // Handle the error appropriately
+    console.error("Error creating enseignant with related data:", error);
+    throw error;
   }
+}
 
   // @Put('/enseignant/:id')
   // async updateEnseignant(
@@ -166,7 +176,7 @@ export class EnseignantController {
 
 
 
-  
+  // Update an enseignant
   @Put('/enseignant/:id')
   async updateEnseignant(
     @Param('id') id: string,
@@ -219,6 +229,8 @@ export class EnseignantController {
     }
   }
 
+
+  // Get an enseignant by ID
   @Get('/enseignant/:id')
   async getEnseignant(
     @Param('id') id: string,
@@ -230,15 +242,7 @@ export class EnseignantController {
           id: parseInt(id, 10),
         },
         include: {
-          matiereEnsg: {
-            include: {
-              matiere: {
-                select: {
-                  nomMatiere: true,
-                },
-              },
-            },
-          },
+          matiereEnsg: true,
           dispoEnsg: true,
         },
       });
@@ -257,6 +261,7 @@ export class EnseignantController {
     }
   }
 
+  // Delete an enseignant
   @Delete('/enseignant/:id')
   async deleteEnseignant(
     @Param('id') id: string,

@@ -17,11 +17,32 @@ import { Response } from 'express'; // Import 'Response' from 'express'
 export class MatiereController {
   constructor(private readonly matiereService: MatiereService) {}
 
+
+  // Get all matieres
   @Get('matieres')
   async getMatieres(): Promise<MatiereModel[]> {
     return this.matiereService.matieres({});
   }
 
+
+  // Get all matieres as Formatted HTML
+  @Get('matieres/htmlData')
+  async findAllAsHtml(): Promise<string> {
+    const data = await this.matiereService.matieres({});
+
+    // Convert data to HTML rows (replace columnName with your actual property)
+    const htmlRows = data.map(item => `
+    <tr>
+    <td>${item.nomMatiere}</td>
+    </tr>
+    
+    `).join('');
+
+    return `<table>${htmlRows}</table>`;
+  }
+
+
+// Get matiere by id
   @Get('matiere/:id')
   async getMatiereById(
     @Param('id') id: string,
@@ -45,6 +66,9 @@ export class MatiereController {
     }
   }
 
+
+
+  // Create new matiere
   @Post('matiere')
   async createMatiere(
     @Body() data: Prisma.MatiereCreateInput,
@@ -52,6 +76,8 @@ export class MatiereController {
     return this.matiereService.createMatiere(data);
   }
 
+
+  // Delete matiere
   @Delete('matiere/:id')
   async deleteMatiere(@Param('id') id: string): Promise<MatiereModel> {
     return this.matiereService.deleteMatiere({
@@ -59,6 +85,8 @@ export class MatiereController {
     });
   }
 
+
+  // Update matiere
   @Put('matiere/:id')
   async updateMatiere(
     @Param('id') id: string,
@@ -70,6 +98,8 @@ export class MatiereController {
     });
   }
 
+
+  // Get matiere by etablissement
   @Get('matiere/etab/:id')
   async GetMatiereByEtab(@Param('id') id: string): Promise<MatiereModel[]> {
     return this.matiereService.GetMatireByEtab(Number(id));

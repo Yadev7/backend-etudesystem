@@ -15,12 +15,13 @@ import {
   export class InscriptionController {
     constructor(private readonly inscriptionService: InscriptionService) {}
 
-    //Inscription
+    // Get all inscriptions
     @Get('inscriptions')
     async getInscriptions(): Promise<InscriptionModel[]> {
       return this.inscriptionService.inscriptions({});
     }
 
+    // Get inscription by ID
     @Get('inscription/:id')
     async getInscriptionById(
       @Param('id') id: string,
@@ -30,6 +31,7 @@ import {
       });
     }
 
+    // Create new inscription
     @Post('inscription')
     async createInscription(
       @Body() data: Prisma.InscriptionCreateInput,
@@ -37,6 +39,7 @@ import {
       return this.inscriptionService.createInscription(data);
     }
     
+    // Update inscription
     @Put('inscription/:id')
     async updateInscription(
       @Param('id') id: string,
@@ -48,6 +51,7 @@ import {
       });
     }
 
+    // Delete inscription
     @Delete('inscription/:id')
     async deleteInscription(
       @Param('id') id: string,

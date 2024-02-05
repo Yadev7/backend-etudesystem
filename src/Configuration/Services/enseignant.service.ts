@@ -4,6 +4,7 @@ import { Enseignant, Prisma } from '@prisma/client';
 
 @Injectable()
 export class EnseignantService {
+  $executeRaw: any;
   constructor(private prisma: PrismaService) {}
 
   async enseignant(
@@ -38,6 +39,12 @@ export class EnseignantService {
       data,
     });
   }
+
+
+  async deleteWithCascade<T>(params: Prisma.EnseignantDeleteArgs): Promise<T> {
+    return this.$executeRaw`DELETE FROM enseignant WHERE ${params.where} CASCADE;`;
+  }
+
 
   async deleteEnseignant(
     data: Prisma.EnseignantWhereUniqueInput,

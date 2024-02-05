@@ -15,11 +15,14 @@ import { Prisma, MatiereEnsg as MatiereEnsgModel } from '@prisma/client';
 export class MatiereEnsgController {
   constructor(private readonly matiereEnsgService: MatiereEnsgService) {}
 
+  // Get all matieresEnsgs
   @Get('/matieresEnsgs')
   async getMatieresEnsg(): Promise<MatiereEnsgModel[]> {
     return this.matiereEnsgService.matiereEnsgs({});
   }
 
+
+  // Get matiereEnsg by ID
   @Get('/matiereEnsg/:id')
   async getMatiereEnsgById(
     @Param('id') id: string,
@@ -29,6 +32,8 @@ export class MatiereEnsgController {
     });
   }
 
+
+  // Create a new matiereEnsg
   @Post('/matiereEnsg')
   async createMatiereEnsg(
     @Body() data: Prisma.MatiereEnsgCreateInput,
@@ -36,6 +41,7 @@ export class MatiereEnsgController {
     return this.matiereEnsgService.createMatiereEnsg(data);
   }
 
+  // Delete a matiereEnsg
   @Delete('/matiereEnsg/:id')
   async deleteMatiereEnsg(@Param('id') id: string): Promise<MatiereEnsgModel> {
     return this.matiereEnsgService.deleteMatiereEnsg({
@@ -43,6 +49,7 @@ export class MatiereEnsgController {
     });
   }
 
+  // Update a matiereEnsg
   @Put('/matiereEnsg/:id')
   async updateMatiereEnsg(
     @Param('id') id: string,
@@ -54,10 +61,21 @@ export class MatiereEnsgController {
     });
   }
 
+  // Get matiereEnsgs by Etab
   @Get('/matiereEnsgs/etab/:id')
   async GetMatiereEnsgByEtab(
     @Param('id') id: string,
   ): Promise<MatiereEnsgModel[]> {
     return this.matiereEnsgService.GetMatiereEnsgByEtab(Number(id));
   }
+
+
+  @Get('/matiereEnsgs/ensg/:id')
+  async GetMatiereEnsgByEnsg(
+    @Param('id') id: string,
+  ): Promise<MatiereEnsgModel[]> {
+    return this.matiereEnsgService.GetMatiereEnsgByEnsg(Number(id));
+  }
+
+
 }

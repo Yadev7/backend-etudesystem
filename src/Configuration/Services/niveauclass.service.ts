@@ -62,7 +62,7 @@ export class NiveauClassService {
     });
   }
 
-  // Get Niveau By Etablissement 
+  // Get Niveau By Etablissement
   async GetNiveauClassByEtab(id: number): Promise<NiveauClass[]> {
     return this.prisma.niveauClass.findMany({
       where: {
@@ -70,4 +70,13 @@ export class NiveauClassService {
       },
     });
   }
+
+  async GetNiveauClassById(id: number): Promise<NiveauClass | null> {
+    return this.prisma.niveauClass.findFirst({
+      where: {
+        id: id,
+      },
+    });
+  }
+
 }

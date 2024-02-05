@@ -10,12 +10,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Activitylogs {
+  id      Int      @id @default(autoincrement())
+  date    DateTime
+  Message String
+  user    User?    @relation(fields: [Actor], references: [id])
+  Actor  Int
+}
+
 // Configuration
 model DispoEnsg {
   id            Int            @id @default(autoincrement())
-  enseignant    Enseignant?    @relation(fields: [idEnsg], references: [id])
+  enseignant    Enseignant?    @relation(fields: [idEnsg], references: [id], onDelete: Cascade)
   idEnsg        Int?
-  jour          Float
+  jour          NomJours
   heureDeb      String         @db.VarChar(50)
   heureFin      String?        @db.VarChar(50)
   etablissement Etablissement? @relation(fields: [idEtab], references: [id])
@@ -23,25 +31,32 @@ model DispoEnsg {
 }
 
 model Eleve {
-  id            Int            @id @default(autoincrement())
-  numElevees    Float
-  nomEleve      String         @db.VarChar(50)
-  prenomEleve   String         @db.VarChar(50)
-  telEleve      String         @db.VarChar(20)
-  emailEleve    String         @db.VarChar(50)
-  login         String         @db.VarChar(50)
-  password      String         @db.VarChar(50)
-  etabOrigine   String         @db.VarChar(50)
-  wallet        Float
-  etablissement Etablissement? @relation(fields: [idEtab], references: [id])
-  idEtab        Int?
+  id                      Int            @id @default(autoincrement())
+  nom                     String         @db.VarChar(50)
+  prenom                  String         @db.VarChar(50)
+  num                     Float
+  niveauClass             NiveauClass?   @relation(fields: [idNiveau], references: [id])
+  idNiveau                Int?
+  email                   String         @db.VarChar(50)
+  tel                     String         @db.VarChar(20)
+  login                   String         @db.VarChar(50)
+  pwd                     String         @db.VarChar(50)
+  etat                    Int
+  wallet                  Float
+  etabOrigine             String         @db.VarChar(50)
+  image                   String         @db.VarChar(200)
+  fraisInsc               String         @db.VarChar(50)
+  etablissement           Etablissement? @relation(fields: [idEtab], references: [id], onDelete: Cascade)
+  idEtab                  Int?
+  datePremiereInscription DateTime
+  Inscription             Inscription[]
+  emploie                 Emploie[]
 }
 
 model Enseignant {
   id            Int            @id @default(autoincrement())
   nomEnsg       String         @db.VarChar(50)
   prenomEnsg    String         @db.VarChar(50)
-  // fctEnsg       String         @db.VarChar(50)
   telEnsg       String         @db.VarChar(20)
   adresseEnsg   String         @db.VarChar(200)
   modePaiement  String         @db.VarChar(50)
@@ -56,6 +71,7 @@ model Enseignant {
   groupeHeure   GroupeHeure[]
   groupeEnsg    GroupeEnsg[]
   emploie       Emploie[]
+
 }
 
 model Etablissement {
@@ -76,6 +92,9 @@ model Etablissement {
   dispoEnsg         DispoEnsg[]
   eleve             Eleve[]
   inscription       Inscription[]
+  PackSoutiens      Pack[]
+  GroupeHeure       GroupeHeure[]
+  // reglementsrecu    reglementsrecu[]
 }
 
 model Matiere {
@@ -85,6 +104,8 @@ model Matiere {
   idEtab        Int
   matiereEnsg   MatiereEnsg[]
   groupeHeure   GroupeHeure[]
+  packmatieres  PackMatieres[]
+  Pack          Pack[]
 }
 
 model MatiereEnsg {
@@ -92,7 +113,7 @@ model MatiereEnsg {
   // refMatiere    String         @db.VarChar(20)
   etablissement Etablissement? @relation(fields: [idEtab], references: [id])
   idEtab        Int?
-  enseignant    Enseignant?    @relation(fields: [idEnsg], references: [id])
+  enseignant    Enseignant?    @relation(fields: [idEnsg], references: [id], onDelete: Cascade)
   idEnsg        Int?
   matiere       Matiere?       @relation(fields: [idMatiere], references: [id])
   idMatiere     Int?
@@ -101,12 +122,12 @@ model MatiereEnsg {
 model NiveauClass {
   id            Int            @id @default(autoincrement())
   refNiveau     String         @db.VarChar(20)
-  // descNiveau    String      @db.VarChar(200)
   fraisInscri   String         @db.VarChar(50)
-  // montant       Int
   etablissement Etablissement? @relation(fields: [idEtab], references: [id])
   idEtab        Int?
   groupeHeure   GroupeHeure[]
+  PackSoutiens  Pack[]
+  eleve         Eleve[]
 }
 
 model Salle {
@@ -125,85 +146,123 @@ model User {
   nomUser       String         @db.VarChar(50)
   prenomUser    String         @db.VarChar(50)
   fctUser       String         @db.VarChar(50)
-  roleUser      String         @db.VarChar(50)
+  roleUser      UserRole
   loginUser     String         @db.VarChar(100)
   passwordUser  String         @db.VarChar(50)
-  statusCompte  String         @db.VarChar(50)
+  statusCompte  StatusCompte
   etablissement Etablissement? @relation(fields: [idEtab], references: [id])
   idEtab        Int?
+  Activitylogs  Activitylogs[]
+}
+
+enum UserRole {
+  ADMIN
+  USER
+  MANAGER
+}
+
+enum StatusCompte {
+  ACTIF
+  SUSPENDU
+  INACTIF
 }
 
 //Suivie Pedagogique
-
 model Inscription {
-  id                Int                   @id @default(autoincrement())
-  numInscri         Float
-  taux_Reduct       Float
-  prix_mensuel      Float
-  date_dern_reprise DateTime
-  date_susp         DateTime
-  date_inscri       DateTime
-  etat_inscri       String                @db.VarChar(50)
-  etablissement     Etablissement?        @relation(fields: [idEtab], references: [id])
-  idEtab            Int?
-  absence           Absence[]
-  paiement          PaiementInscription[]
+  id              Int            @id @default(autoincrement())
+  groupeHeure     GroupeHeure?   @relation(fields: [idGroupe], references: [id])
+  idGroupe        Int?
+  eleve           Eleve?         @relation(fields: [idEleve], references: [id])
+  idEleve         Int?
+  prixMensuel     Float
+  dateInscription DateTime
+  etatInscription String         @db.VarChar(50)
+  dateSusp        DateTime
+  dateReprise     DateTime
+  packSoutien     Pack?          @relation(fields: [idPack], references: [id])
+  idPack          Int?
+  etablissement   Etablissement? @relation(fields: [idEtab], references: [id])
+  idEtab          Int?
+  // absence         Absence[]
+  // paiement        PaiementInscription[]
 }
 
 model GroupeHeure {
-  id              Int                   @id @default(autoincrement())
-  niveau          NiveauClass?          @relation(fields: [idNiveau], references: [id])
+  id              Int             @id @default(autoincrement())
+  niveau          NiveauClass?    @relation(fields: [idNiveau], references: [id], onDelete: Cascade)
   idNiveau        Int?
-  enseignant      Enseignant?           @relation(fields: [idEnsg], references: [id])
+  enseignant      Enseignant?     @relation(fields: [idEnsg], references: [id], onDelete: Cascade)
   idEnsg          Int?
-  matiere         Matiere?              @relation(fields: [idMatiere], references: [id])
+  matiere         Matiere?        @relation(fields: [idMatiere], references: [id], onDelete: Cascade)
   idMatiere       Int?
-  numGroupe       Float?
+  numGroupe       String
+  type            TypeGroupe
   prix_mensuel    Float?
-  prix_fix_eleve  Float?
-  modePaiement    String                @db.VarChar(50)
+  modePaiementEns ModePaiementEns
   taux            Float?
   date_debut      DateTime
   date_fin        DateTime
   nbrHeureSemaine Float
-  etatGroupe      String                @db.VarChar(50)
+  etatGroupe      EtatGroupe
+  etablissement   Etablissement?  @relation(fields: [idEtab], references: [id])
+  idEtab          Int?
   groupeEnsg      GroupeEnsg[]
-  paiement        PaiementInscription[]
   emploie         Emploie[]
+  Inscription     Inscription[]
 }
 
-model Absence {
-  id          Int          @id @default(autoincrement())
-  inscription Inscription? @relation(fields: [idInscri], references: [id])
-  idInscri    Int?
-  jour        Float
-  dateAbs     DateTime
-  heureD      String       @db.VarChar(50)
-  heureF      String       @db.VarChar(50)
+enum EtatGroupe {
+  En_instance
+  En_cours
+  Suspendue
+  Cloture
 }
+
+enum TypeGroupe {
+  Soutiens
+  Libre
+}
+
+enum ModePaiementEns {
+  ParPourcentage
+  ParEleve
+  ParHeure
+  ParSeance
+  ForfaitMensuell
+}
+
+// model Absence {
+//   id          Int          @id @default(autoincrement())
+//   inscription Inscription? @relation(fields: [idInscri], references: [id])
+//   idInscri    Int?
+//   jour        Float
+//   dateAbs     DateTime
+//   heureD      String       @db.VarChar(50)
+//   heureF      String       @db.VarChar(50)
+// }
 
 model GroupeEnsg {
   id         Int          @id @default(autoincrement())
   groupe     GroupeHeure? @relation(fields: [idGroupe], references: [id])
   idGroupe   Int?
-  enseignant Enseignant?  @relation(fields: [idEnsg], references: [id])
+  enseignant Enseignant?  @relation(fields: [idEnsg], references: [id], onDelete: Cascade)
   idEnsg     Int?
   date_debut DateTime
   date_fin   DateTime
 }
 
-model PaiementInscription {
-  id          Int          @id @default(autoincrement())
-  moisPay     Float
-  montantPay  Float
-  datePay     DateTime
-  date_susp   DateTime
-  modePay     String       @db.VarChar(50)
-  inscription Inscription? @relation(fields: [idInscri], references: [id])
-  idInscri    Int?
-  groupeHeure GroupeHeure? @relation(fields: [idGroupe], references: [id])
-  idGroupe    Int?
-}
+// model PaiementInscription {
+//   id          Int          @id @default(autoincrement())
+//   moisPay     Float
+//   montantPay  Float
+//   datePay     DateTime
+//   date_susp   DateTime
+//   modePay     String       @db.VarChar(50)
+//   inscription Inscription? @relation(fields: [idInscri], references: [id])
+//   idInscri    Int?
+//   groupeHeure GroupeHeure? @relation(fields: [idGroupe], references: [id])
+//   idGroupe    Int?
+// }
 
 model Emploie {
   id          Int          @id @default(autoincrement())
@@ -211,9 +270,77 @@ model Emploie {
   idGroupe    Int?
   salle       Salle?       @relation(fields: [idSalle], references: [id])
   idSalle     Int?
-  enseignant  Enseignant?  @relation(fields: [idEnsg], references: [id])
+  enseignant  Enseignant?  @relation(fields: [idEnsg], references: [id], onDelete: Cascade)
   idEnsg      Int?
-  jour        Int
-  heureDeb    String       @db.VarChar(50)
+  eleve       Eleve?       @relation(fields: [idEleve], references: [id])
+  idEleve     Int?
+  jour        NomJours
+  heureDebut  String       @db.VarChar(50)
   heureFin    String       @db.VarChar(50)
 }
+
+model Pack {
+  id            Int            @id @default(autoincrement())
+  libelle       String
+  niveauClass   NiveauClass?   @relation(fields: [idNiveau], references: [id])
+  idNiveau      Int?
+  prixPack      Float
+  etablissement Etablissement? @relation(fields: [idEtab], references: [id])
+  idEtab        Int?
+  matiere       Matiere?       @relation(fields: [idMatiere], references: [id])
+  idMatiere     Int
+  Inscription   Inscription[]
+  packmatieres  PackMatieres[]
+}
+
+// model reglementsrecu {
+//   id            Int            @id @default(autoincrement())
+//   date          DateTime
+//   montant       Float
+//   typeReglement Float
+//   observation   String
+//   eleve         Eleve?         @relation(fields: [idEleve], references: [id])
+//   idEleve       Int
+//   etablissement Etablissement? @relation(fields: [idEtab], references: [id])
+//   idEtab        Int
+// }
+
+model PackMatieres {
+  id          Int      @id @default(autoincrement())
+  pack        Pack?    @relation(fields: [idPack], references: [id])
+  idPack      Int
+  matiere     Matiere? @relation(fields: [idMatiere], references: [id])
+  idMatiere   Int
+  prixMatiere Float
+}
+
+model Jours {
+  id        Int @id @default(autoincrement())
+  nom_jours NomJours
+}
+
+enum NomJours {
+  Dimanche
+  Lundi
+  Mardi
+  Mercredi
+  Jeudi
+  Vendredi
+  Samedi
+}
+
+
+// model Historiqueensggroupe {
+//   id          Int          @id @default(autoincrement())
+//   groupeheure GroupeHeure? @relation(fields: [idGroupe], references: [id])
+//   idGroupe    Int
+//   enseignant  Enseignant?  @relation(fields: [idEnsg], references: [id], onDelete: Cascade)
+//   idEnsg      Int
+//   dateDebut   DateTime
+//   dateFin     DateTime
+// }
+
+// model Heures {
+//   id     Int @id @default(autoincrement())
+//   heures Int
+// }
